@@ -3,6 +3,7 @@
 import { login } from '@/actions/login';
 import { useActionState } from 'react';
 
+
 export default function LoginPage() {
 
   const [state, formAction, isPending] = useActionState(login, {
@@ -12,19 +13,21 @@ export default function LoginPage() {
   const {  error } = state
   
   return (
-    <main style={{ maxWidth: 380, margin: '80px auto' }}>
-      <h1>Entrar na plataforma</h1>
-
-      <form action={formAction}>
+    <main className="login-container">
+        <h1>Entrar na plataforma</h1>
+        <form action={formAction} className="login-form">
         <label htmlFor="email">E-mail</label>
-        <input id="email" name="email" type="email" required />
+        <input className="login-input" id="email" name="email" type="email" required />
 
         <label htmlFor="password">Senha</label>
-        <input id="password" name="password" type="password" required />
+        <input className="login-input" id="password" name="password" type="password" required />
 
-        <button disabled={isPending} type="submit">Entrar</button>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-      </form>
+        <button className="login-button" disabled={isPending} type="submit">
+          Entrar
+        </button>
+        {error && <p className="login-error" role="alert">{error}</p>}
+        </form>
     </main>
+    
   );
 }

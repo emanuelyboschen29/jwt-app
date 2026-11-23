@@ -1,0 +1,174 @@
+/* ===== PÁGINA ===== */
+
+.leitores {
+
+  width: 97%;
+  margin: 0 auto;
+  padding: 32px;
+  min-height: 100%;
+  background: #becbdc;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  color: #263b57;
+}
+
+/* ===== CABEÇALHO ===== */
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.subtitulo {
+  color: #6682a8;
+  font-size: 13px;
+}
+
+.cabecalho h1 {
+  font-size: 27px;
+  margin: 6px 0;
+  color: #233b5b;
+}
+
+.cabecalho p {
+  font-size: 14px;
+  margin: 0;
+  color: #8293aa;
+}
+
+/* ===== BOTÃO ===== */
+
+.botao {
+  background: #376cc5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 11px 17px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.botao:hover {
+  background: #2859a7;
+}
+
+/* ===== BUSCA ===== */
+
+.filtros input {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 14px;
+  border: 1px solid #d7e3f3;
+  border-radius: 8px;
+  background: white;
+  color: #344b68;
+  font-size: 14px;
+  outline: none;
+}
+
+.filtros input:focus {
+  border-color: #6c96d8;
+  box-shadow: 0 0 0 3px #dce9fb;
+}
+
+.filtros input::placeholder {
+  color: #9aa9bc;
+}
+
+/* ===== CARD ===== */
+
+.card {
+  background: white;
+  border: 1px solid #dfe8f4;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 3px 12px #315a8a0a;
+}
+
+.card-titulo {
+  padding: 20px 22px;
+  border-bottom: 1px solid #eaf0f7;
+}
+
+.card-titulo h2 {
+  font-size: 17px;
+  margin: 0 0 6px;
+  color: #304866;
+}
+
+.card-titulo p {
+  font-size: 13px;
+  color: #8a9bb1;
+  margin: 0;
+}
+
+/* ===== TABELA ===== */
+
+.tabela-container {
+  overflow-x: auto;
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.tabela th {
+  background: #f4f8fe;
+  color: #7187a5;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 14px 20px;
+}
+
+.tabela td {
+  padding: 15px 20px;
+  font-size: 13px;
+  border-top: 1px solid #edf2f8;
+  color: #62758e;
+}
+
+.tabela td:first-child {
+  color: #304866;
+  font-weight: 500;
+}
+
+.tabela tbody tr:hover {
+  background: #f9fbff;
+}
+
+.vazio {
+  text-align: center;
+  padding: 42px 20px !important;
+  color: #91a1b7 !important;
+  font-weight: 400 !important;
+}
+
+/* ===== RESPONSIVO ===== */
+
+@media (max-width: 768px) {
+  .leitores {
+    padding: 20px 14px;
+  }
+
+  .cabecalho {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .filtros input {
+    max-width: 100%;
+  }
+
+  .tabela th,
+  .tabela td {
+    padding: 12px;
+  }
+}

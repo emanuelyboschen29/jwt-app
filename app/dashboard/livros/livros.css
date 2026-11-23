@@ -1,0 +1,21 @@
+
+
+@media (max-width: 768px) {
+  .page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .page-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .page-search {
+    max-width: 100%;
+  }
+
+  .page-table th,
+  .page-table td {
+    padding: 12px;
+  }
+}
