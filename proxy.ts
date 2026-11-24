@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export function proxy(req: NextRequest) {
-  const token = req.cookies.get('token')?.value;
+  const session = req.cookies.get('session')?.value;
 
-  if (!token) {
+  if (!session) {
     return NextResponse.redirect(
       new URL('/', req.url)
     );

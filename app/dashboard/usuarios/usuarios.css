@@ -1,0 +1,157 @@
+.usuarios-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  color: var(--palette-olive);
+}
+
+.usuarios-header span {
+  color: var(--palette-moss);
+  font-size: 13px;
+}
+
+.usuarios-header h1 {
+  margin: 6px 0;
+  color: var(--palette-olive);
+  font-size: 27px;
+}
+
+.usuarios-header p {
+  margin: 0;
+  color: var(--palette-moss);
+  font-size: 14px;
+}
+
+.usuarios-card {
+  overflow: hidden;
+  border: 1px solid var(--palette-border);
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 3px 12px var(--palette-shadow);
+}
+
+.usuarios-card-header {
+  padding: 20px 22px;
+  border-bottom: 1px solid var(--palette-border);
+}
+
+.usuarios-card-header h2 {
+  margin: 0 0 6px;
+  color: var(--palette-olive);
+  font-size: 17px;
+}
+
+.usuarios-card-header p {
+  margin: 0;
+  color: var(--palette-moss);
+  font-size: 13px;
+}
+
+.usuarios-table-wrapper {
+  overflow-x: auto;
+}
+
+.usuarios-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.usuarios-table th,
+.usuarios-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--palette-border);
+}
+
+.usuarios-table th {
+  background: var(--palette-cream);
+  color: var(--palette-moss);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.usuarios-table td {
+  color: var(--palette-moss);
+  font-size: 13px;
+}
+
+.usuarios-role-form {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.usuarios-role-form select,
+.usuarios-role-form button {
+  min-height: 36px;
+  padding: 7px 10px;
+  border: 1px solid var(--palette-border);
+  border-radius: 7px;
+  background: white;
+  color: var(--palette-olive);
+  font: inherit;
+}
+
+.usuarios-role-form button {
+  border-color: var(--palette-olive);
+  background: var(--palette-olive);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.usuarios-role-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.usuarios-role-form small {
+  flex-basis: 100%;
+  color: var(--palette-moss);
+  font-size: 12px;
+}
+
+.usuarios-role-form .usuarios-role-error {
+  color: #dc2626;
+}
+
+.usuarios-role-form .usuarios-role-success {
+  color: var(--palette-moss);
+}
+
+.usuarios-empty {
+  padding: 36px 20px !important;
+  text-align: center;
+}
+
+.usuarios-role-legend {
+  margin: 0;
+  padding: 16px 22px;
+  border-top: 1px solid var(--palette-border);
+  color: var(--palette-moss);
+  font-size: 13px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 768px) {
+  .usuarios-card-header {
+    padding: 18px 16px;
+  }
+
+  .usuarios-table th,
+  .usuarios-table td {
+    padding: 12px;
+  }
+}

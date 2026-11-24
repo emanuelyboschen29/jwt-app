@@ -1,16 +1,29 @@
-export default function LivrosPage() {
+import Link from "next/link";
+import { requireAnyRole } from "@/lib/auth";
+
+import "./livros.css";
+
+export const instant = false;
+
+export default async function LivrosPage() {
+  await requireAnyRole(["admin", "librarian"]);
+
   return (
     <main className="livros-container">
+      <Link href="/dashboard" className="livros-voltar">
+        ← Voltar ao dashboard
+      </Link>
+
       <header className="livros-header">
         <div>
-          <span>Biblioteca</span>
+          <span className="livros-subtitulo">Biblioteca</span>
           <h1>Livros</h1>
           <p>Gerencie o acervo da biblioteca.</p>
         </div>
 
-        <button className="btn-novo-livro">
+        <Link href="/dashboard/livros/novo" className="livros-button">
           + Novo livro
-        </button>
+        </Link>
       </header>
 
       <section className="livros-filtros">

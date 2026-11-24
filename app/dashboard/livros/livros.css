@@ -1,21 +1,129 @@
+.livros-container {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  color: var(--palette-olive);
+}
 
+.livros-voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  padding: 10px 14px;
+  border: 1px solid var(--palette-border);
+  border-radius: 8px;
+  background: white;
+  color: var(--palette-olive);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.livros-voltar:hover {
+  background: var(--palette-cream);
+}
+
+.livros-voltar:focus-visible {
+  outline: 3px solid var(--palette-focus);
+  outline-offset: 2px;
+}
+
+.livros-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.livros-subtitulo {
+  color: var(--palette-moss);
+  font-size: 13px;
+}
+
+.livros-header h1 {
+  margin: 6px 0;
+  color: var(--palette-olive);
+  font-size: 27px;
+}
+
+.livros-header p {
+  margin: 0;
+  color: var(--palette-moss);
+  font-size: 14px;
+}
+
+.livros-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 11px 17px;
+  border: none;
+  border-radius: 8px;
+  background: var(--palette-olive);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.livros-button:hover {
+  background: var(--palette-moss);
+}
+
+.livros-filtros input {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 14px;
+  border: 1px solid var(--palette-border);
+  border-radius: 8px;
+  outline: none;
+  background: white;
+  color: var(--palette-olive);
+  font-size: 14px;
+}
+
+.livros-filtros input:focus {
+  border-color: var(--palette-honey);
+  box-shadow: 0 0 0 3px var(--palette-focus);
+}
+
+.livros-filtros input::placeholder {
+  color: var(--palette-moss);
+}
+
+.livros-lista {
+  min-height: 180px;
+  padding: 20px 22px;
+  border: 1px solid var(--palette-border);
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 3px 12px var(--palette-shadow);
+}
+
+.livros-lista h2 {
+  margin: 0;
+  color: var(--palette-olive);
+  font-size: 17px;
+}
 
 @media (max-width: 768px) {
-  .page-header {
+  .livros-container {
+    padding: 0;
+  }
+
+  .livros-header {
     align-items: flex-start;
     flex-direction: column;
   }
 
-  .page-stats {
-    grid-template-columns: 1fr;
-  }
-
-  .page-search {
-    max-width: 100%;
-  }
-
-  .page-table th,
-  .page-table td {
-    padding: 12px;
+  .livros-filtros input {
+    max-width: none;
   }
 }

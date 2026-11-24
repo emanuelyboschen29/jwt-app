@@ -1,0 +1,157 @@
+.cadastro-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  color: var(--palette-olive);
+}
+
+.cadastro-back {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 10px 14px;
+  border: 1px solid var(--palette-border);
+  border-radius: 8px;
+  background: white;
+  color: var(--palette-olive);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.cadastro-back:hover {
+  background: var(--palette-cream);
+}
+
+.cadastro-heading span {
+  color: var(--palette-moss);
+  font-size: 13px;
+}
+
+.cadastro-heading h1 {
+  margin: 6px 0;
+  color: var(--palette-olive);
+  font-size: 27px;
+}
+
+.cadastro-heading p {
+  margin: 0;
+  color: var(--palette-moss);
+  font-size: 14px;
+}
+
+.cadastro-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  border: 1px solid var(--palette-border);
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 3px 12px var(--palette-shadow);
+}
+
+.cadastro-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.cadastro-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--palette-olive);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.cadastro-field--wide {
+  grid-column: 1 / -1;
+}
+
+.cadastro-field input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--palette-border);
+  border-radius: 8px;
+  outline: none;
+  background: white;
+  color: var(--palette-olive);
+  font: inherit;
+  font-weight: 400;
+}
+
+.cadastro-field input:focus {
+  border-color: var(--palette-honey);
+  box-shadow: 0 0 0 3px var(--palette-focus);
+}
+
+.cadastro-field input::placeholder {
+  color: var(--palette-moss);
+}
+
+.cadastro-notice {
+  margin: 0;
+  color: var(--palette-moss);
+  font-size: 13px;
+}
+
+.cadastro-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 18px;
+  border-top: 1px solid var(--palette-border);
+}
+
+.cadastro-cancel,
+.cadastro-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 10px 16px;
+  border: 1px solid var(--palette-border);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.cadastro-cancel {
+  background: white;
+  color: var(--palette-moss);
+}
+
+.cadastro-submit {
+  border-color: var(--palette-olive);
+  background: var(--palette-olive);
+  color: white;
+}
+
+.cadastro-submit:disabled {
+  border-color: var(--palette-moss);
+  background: var(--palette-moss);
+  cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+  .cadastro-form {
+    padding: 18px;
+  }
+
+  .cadastro-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .cadastro-field--wide {
+    grid-column: auto;
+  }
+
+  .cadastro-actions {
+    flex-direction: column-reverse;
+  }
+}

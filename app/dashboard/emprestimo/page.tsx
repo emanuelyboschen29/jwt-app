@@ -1,51 +1,63 @@
-export default function EmprestimosPage() {
+import Link from "next/link";
+import { requireAnyRole } from "@/lib/auth";
+import "./emprestimo.css";
+
+export const instant = false;
+
+export default async function EmprestimosPage() {
+  await requireAnyRole(["admin", "librarian"]);
+
   return (
-    <main className="page-container">
-      <header className="page-header">
+    <main className="emprestimo-container">
+      <Link href="/dashboard" className="emprestimo-voltar">
+        ← Voltar ao dashboard
+      </Link>
+
+      <header className="emprestimo-header">
         <div>
           <span>Biblioteca</span>
           <h1>Empréstimos</h1>
           <p>Controle os empréstimos e as devoluções de livros.</p>
         </div>
 
-        <button className="page-button">
+        <Link href="/dashboard/emprestimo/novo" className="emprestimo-button">
           + Novo empréstimo
-        </button>
+        </Link>
       </header>
 
-      <section className="page-stats">
-        <div className="page-stat-card">
+      <section className="emprestimo-stats">
+        <div className="emprestimo-stat-card">
           <span>Empréstimos ativos</span>
           <h3>--</h3>
         </div>
 
-        <div className="page-stat-card">
+        <div className="emprestimo-stat-card">
           <span>Em atraso</span>
           <h3>--</h3>
         </div>
 
-        <div className="page-stat-card">
+        <div className="emprestimo-stat-card">
           <span>Devolvidos</span>
           <h3>--</h3>
         </div>
       </section>
 
-      <section className="page-filters">
+      <section className="emprestimo-filtros">
         <input
-          className="page-search"
+          className="emprestimo-search"
           type="text"
           placeholder="Buscar empréstimo..."
         />
       </section>
 
-      <section className="page-card">
-        <div className="page-card-header">
+      <section className="emprestimo-card">
+        <div className="emprestimo-card-header">
           <h2>Registro de empréstimos</h2>
           <p>Consulte os empréstimos e suas situações.</p>
         </div>
 
-        <div className="page-table-wrapper">
-          <table className="page-table">
+        <div className="emprestimo-tabela-container">
+          <table className="emprestimo-tabela">
             <thead>
               <tr>
                 <th>Livro</th>
@@ -59,7 +71,7 @@ export default function EmprestimosPage() {
 
             <tbody>
               <tr>
-                <td colSpan={6} className="page-empty">
+                <td colSpan={6} className="emprestimo-vazio">
                   Os empréstimos serão carregados aqui.
                 </td>
               </tr>
