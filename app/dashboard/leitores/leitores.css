@@ -77,7 +77,8 @@
   background: var(--palette-moss);
 }
 
-.leitores-filtros input {
+.leitores-filtros input,
+.leitores-filtros select {
   box-sizing: border-box;
   width: 100%;
   max-width: 400px;
@@ -90,7 +91,8 @@
   font-size: 14px;
 }
 
-.leitores-filtros input:focus {
+.leitores-filtros input:focus,
+.leitores-filtros select:focus {
   border-color: var(--palette-honey);
   box-shadow: 0 0 0 3px var(--palette-focus);
 }
@@ -164,6 +166,10 @@
   color: var(--palette-moss) !important;
   font-weight: 400 !important;
   text-align: center;
+}
+
+.leitores-error {
+  color: #b42318;
 }
 
 @media (max-width: 768px) {

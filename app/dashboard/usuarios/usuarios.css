@@ -47,6 +47,63 @@
   font-size: 13px;
 }
 
+.usuarios-attendant-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  padding: 20px 22px;
+}
+
+.usuarios-attendant-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--palette-moss);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.usuarios-attendant-form input {
+  min-height: 38px;
+  padding: 8px 10px;
+  border: 1px solid var(--palette-border);
+  border-radius: 7px;
+  color: var(--palette-olive);
+  font: inherit;
+}
+
+.usuarios-attendant-form button {
+  min-height: 38px;
+  align-self: end;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 7px;
+  background: var(--palette-olive);
+  color: white;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.usuarios-attendant-form button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.usuarios-attendant-form .usuarios-form-message {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 13px;
+}
+
+.usuarios-form-error {
+  color: #dc2626;
+}
+
+.usuarios-form-success {
+  color: var(--palette-moss);
+}
+
 .usuarios-table-wrapper {
   overflow-x: auto;
 }
@@ -147,6 +204,11 @@
 
 @media (max-width: 768px) {
   .usuarios-card-header {
+    padding: 18px 16px;
+  }
+
+  .usuarios-attendant-form {
+    grid-template-columns: 1fr;
     padding: 18px 16px;
   }
 

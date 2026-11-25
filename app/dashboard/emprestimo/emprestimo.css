@@ -128,6 +128,22 @@
   border-color: var(--palette-olive);
 }
 
+.emprestimo-filtros select {
+  box-sizing: border-box;
+  min-height: 42px;
+  padding: 10px 12px;
+  border: 1px solid var(--palette-border);
+  border-radius: 9px;
+  outline: none;
+  background: white;
+  color: var(--palette-olive);
+  font-size: 14px;
+}
+
+.emprestimo-filtros select:focus {
+  border-color: var(--palette-olive);
+}
+
 .emprestimo-card {
   overflow: hidden;
   border: 1px solid var(--palette-border);
@@ -218,6 +234,38 @@
 .emprestimo-status-pendente {
   background: var(--palette-honey-soft);
   color: var(--palette-olive);
+}
+
+.emprestimo-error {
+  color: #b42318;
+}
+
+.emprestimo-tabela td form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.emprestimo-tabela td form > button {
+  width: max-content;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 7px;
+  background: var(--palette-olive);
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.emprestimo-tabela td form > button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.emprestimo-tabela .form-error,
+.emprestimo-tabela .form-success {
+  max-width: 180px;
+  font-size: 12px;
 }
 
 @media (max-width: 768px) {

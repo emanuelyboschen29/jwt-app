@@ -11,8 +11,10 @@ const navigation: {
   icon: string;
   roles?: readonly UserRole[];
 }[] = [
-  { href: "/dashboard", label: "Dashboard", icon: "▦" },
+  { href: "/dashboard", label: "Dashboard", icon: "▦", roles: ["admin"] },
   { href: "/dashboard/livros", label: "Livros", icon: "▤", roles: ["admin", "librarian"] },
+  { href: "/dashboard/categorias", label: "Categorias", icon: "C", roles: ["admin"] },
+  { href: "/dashboard/autores", label: "Autores", icon: "A", roles: ["admin"] },
   { href: "/dashboard/leitores", label: "Leitores", icon: "◉", roles: ["admin", "librarian"] },
   { href: "/dashboard/emprestimo", label: "Empréstimos", icon: "↔", roles: ["admin", "librarian"] },
   { href: "/dashboard/usuarios", label: "Usuários", icon: "U", roles: ["admin"] },
@@ -26,10 +28,11 @@ export default function DashboardSidebar({
   role: UserRole;
 }) {
   const pathname = usePathname();
+  const homeHref = role === "admin" ? "/dashboard" : "/dashboard/livros";
 
   return (
     <aside className="dashboard-sidebar">
-      <Link href="/dashboard" className="dashboard-brand" aria-label="Ir para o dashboard">
+      <Link href={homeHref} className="dashboard-brand" aria-label="Ir para a página inicial">
         <span className="brand-mark">B</span>
         <span>Biblioteca</span>
       </Link>

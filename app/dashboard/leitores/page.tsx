@@ -1,11 +1,21 @@
 import Link from "next/link";
 import { requireAnyRole } from "@/lib/auth";
+import { apiErrorMessage, libraryApi } from "@/lib/library-api";
+import type { Reader } from "@/lib/library-types";
+import ReaderList from "./reader-list";
 import "./leitores.css";
 
 export const instant = false;
 
 export default async function LeitoresPage() {
   await requireAnyRole(["admin", "librarian"]);
+  let readers: Reader[] = [];
+  let error: string | null = null;
+  try {
+    readers = await libraryApi<Reader[]>("/readers");
+  } catch (requestError) {
+    error = apiErrorMessage(requestError);
+  }
 
   return (
     <main className="leitores">
@@ -25,41 +35,7 @@ export default async function LeitoresPage() {
         </Link>
       </header>
 
-      <section className="leitores-filtros">
-        <input
-          type="text"
-          placeholder="Buscar leitor pelo nome..."
-        />
-      </section>
-
-      <section className="leitores-card">
-        <div className="leitores-card-titulo">
-          <h2>Leitores cadastrados</h2>
-          <p>Consulte e gerencie os leitores da biblioteca.</p>
-        </div>
-
-        <div className="leitores-tabela-container">
-          <table className="leitores-tabela">
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>Dados do leitor</th>
-                <th>Cadastro</th>
-                <th>Status</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr>
-                <td colSpan={5} className="leitores-vazio">
-                  Nenhum leitor carregado.
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+      {error ? <p className="leitores-error" role="alert">{error}</p> : <ReaderList readers={readers} />}
     </main>
   );
 }

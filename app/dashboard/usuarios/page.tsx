@@ -1,4 +1,5 @@
 import { requireAnyRole, listUsersForAdmin } from "@/lib/auth";
+import AttendantForm from "./attendant-form";
 import RoleEditor from "./role-editor";
 import "./usuarios.css";
 
@@ -14,14 +15,16 @@ export default async function UsuariosPage() {
         <div>
           <span>Administração</span>
           <h1>Usuários e permissões</h1>
-          <p>Consulte as contas e atribua um papel para cada usuário.</p>
+          <p>Cadastre atendentes e gerencie as permissões das contas.</p>
         </div>
       </header>
+
+      <AttendantForm />
 
       <section className="usuarios-card" aria-labelledby="usuarios-titulo">
         <div className="usuarios-card-header">
           <h2 id="usuarios-titulo">Contas cadastradas</h2>
-          <p>Novas contas públicas recebem automaticamente o papel Leitor.</p>
+          <p>As contas são classificadas como Administrador ou Atendente.</p>
         </div>
 
         <div className="usuarios-table-wrapper">
@@ -61,8 +64,8 @@ export default async function UsuariosPage() {
         </div>
 
         <p className="usuarios-role-legend">
-          Papéis: Administrador (gerencia usuários), Bibliotecário (gerencia o acervo)
-          e Leitor (acesso ao painel).
+          Administradores gerenciam os atendentes e a biblioteca. Atendentes cadastram
+          leitores, registram empréstimos e consultam o acervo.
         </p>
       </section>
     </main>

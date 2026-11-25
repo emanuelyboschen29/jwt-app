@@ -29,9 +29,17 @@ BOOTSTRAP_ADMIN_EMAIL=admin@example.com
 BOOTSTRAP_ADMIN_PASSWORD=use-uma-senha-aleatoria-com-16-caracteres-ou-mais
 ```
 
-O administrador inicial é criado quando a aplicação acessa a base pela primeira vez. Cadastros públicos recebem sempre o papel **Leitor**. Na opção **Usuários**, administradores podem atribuir os papéis **Administrador**, **Bibliotecário** ou **Leitor**. Leitores não acessam as telas de gerenciamento; bibliotecários gerenciam o acervo, leitores e empréstimos.
+O administrador inicial é criado quando a aplicação acessa a base pela primeira vez. Há dois perfis: **Administrador** (`isAdmin = true`) e **Atendente** (`isAdmin = false`). Não há cadastro público: somente administradores podem cadastrar atendentes na opção **Usuários**. Administradores gerenciam atendentes, categorias, autores, livros e relatórios; atendentes cadastram leitores, registram empréstimos e devoluções e consultam o acervo.
 
 Os dados ficam na máquina/servidor que executa a aplicação. Em produção com uma única instância, mantenha `data/auth.sqlite` em um volume persistente; `AUTH_DATABASE_PATH` permite escolher outro caminho. Para executar múltiplas instâncias, use um banco de dados gerenciado em vez de compartilhar um arquivo SQLite.
+
+## Integração com a API da biblioteca
+
+Configure `API_URL` no `.env` local. O padrão é `http://localhost:3000/v1`. A API precisa estar ativa e retornar `accessToken` e `refreshToken` no login, além de disponibilizar as rotas de categorias, autores, livros, leitores, empréstimos e relatórios descritas no README do jwt-api.
+
+As telas de categorias e autores permitem cadastro e listagem; livros têm cadastro e filtros; leitores podem ser cadastrados e consultados; empréstimos podem ser registrados, filtrados e devolvidos. O dashboard administrativo usa o relatório da API. As gravações são validadas no servidor, verificam o perfil local e enviam o access token em `Authorization: Bearer`.
+
+Os tokens de autenticação da API ficam em cookies `httpOnly`. A renovação automática pelo refresh token ainda não está implementada; quando o access token expirar, será necessário entrar novamente.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 

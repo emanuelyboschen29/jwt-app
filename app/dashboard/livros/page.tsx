@@ -1,12 +1,28 @@
 import Link from "next/link";
 import { requireAnyRole } from "@/lib/auth";
-
+import { libraryApi, apiErrorMessage } from "@/lib/library-api";
+import type { Author, Book, Category } from "@/lib/library-types";
+import BookList from "./book-list";
 import "./livros.css";
 
 export const instant = false;
 
 export default async function LivrosPage() {
-  await requireAnyRole(["admin", "librarian"]);
+  const user = await requireAnyRole(["admin", "librarian"]);
+  let books: Book[] = [];
+  let categories: Category[] = [];
+  let authors: Author[] = [];
+  let error: string | null = null;
+
+  try {
+    [books, categories, authors] = await Promise.all([
+      libraryApi<Book[]>("/books"),
+      libraryApi<Category[]>("/categories"),
+      libraryApi<Author[]>("/authors"),
+    ]);
+  } catch (requestError) {
+    error = apiErrorMessage(requestError);
+  }
 
   return (
     <main className="livros-container">
@@ -21,23 +37,14 @@ export default async function LivrosPage() {
           <p>Gerencie o acervo da biblioteca.</p>
         </div>
 
-        <Link href="/dashboard/livros/novo" className="livros-button">
-          + Novo livro
-        </Link>
+        {user.role === "admin" && (
+          <Link href="/dashboard/livros/novo" className="livros-button">+ Novo livro</Link>
+        )}
       </header>
 
-      <section className="livros-filtros">
-        <input
-          type="text"
-          placeholder="Buscar livro pelo título..."
-        />
-      </section>
-
-      <section className="livros-lista">
-        <h2>Acervo de livros</h2>
-
-        {/* Aqui entrará a tabela de livros */}
-      </section>
+      {error
+        ? <p className="livros-error" role="alert">{error}</p>
+        : <BookList books={books} categories={categories} authors={authors} />}
     </main>
   );
 }

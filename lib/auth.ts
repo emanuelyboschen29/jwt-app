@@ -31,13 +31,6 @@ type AuthGlobals = typeof globalThis & {
 
 const authGlobals = globalThis as AuthGlobals;
 
-export class EmailAlreadyRegisteredError extends Error {
-  constructor() {
-    super("Já existe uma conta com este e-mail.");
-    this.name = "EmailAlreadyRegisteredError";
-  }
-}
-
 function readString(row: SqlRow | undefined, field: string): string | null {
   const value = row?.[field];
   return typeof value === "string" ? value : null;
@@ -190,16 +183,25 @@ async function seedInitialAdmin(database: DatabaseSync): Promise<void> {
       return;
     }
 
-    if (findStoredUserByEmail(database, emailSetting)) {
-      throw new Error("O e-mail inicial do administrador já pertence a uma conta não administradora.");
+    const existingUser = findStoredUserByEmail(database, emailSetting);
+    if (existingUser) {
+      database
+        .prepare(
+          `UPDATE users
+           SET name = 'Administrador',
+               password_hash = ?,
+               role = 'admin'
+           WHERE email = ?`,
+        )
+        .run(initialAdminHash, emailSetting);
+    } else {
+      database
+        .prepare(
+          `INSERT INTO users (name, email, password_hash, role, created_at)
+           VALUES (?, ?, ?, 'admin', ?)`,
+        )
+        .run("Administrador", emailSetting, initialAdminHash, new Date().toISOString());
     }
-
-    database
-      .prepare(
-        `INSERT INTO users (name, email, password_hash, role, created_at)
-         VALUES (?, ?, ?, 'admin', ?)`,
-      )
-      .run("Administrador", emailSetting, initialAdminHash, new Date().toISOString());
     database.exec("COMMIT");
   } catch (error) {
     database.exec("ROLLBACK");
@@ -224,34 +226,6 @@ async function getReadyDatabase(): Promise<DatabaseSync> {
   const { database, ready } = getDatabase();
   await ready;
   return database;
-}
-
-export async function createReaderAccount(
-  name: string,
-  email: string,
-  password: string,
-): Promise<void> {
-  const normalizedEmail = email.trim().toLowerCase();
-  const database = await getReadyDatabase();
-
-  if (findStoredUserByEmail(database, normalizedEmail)) {
-    throw new EmailAlreadyRegisteredError();
-  }
-
-  const passwordHash = await hashPassword(password);
-  try {
-    database
-      .prepare(
-        `INSERT INTO users (name, email, password_hash, role, created_at)
-         VALUES (?, ?, ?, 'reader', ?)`,
-      )
-      .run(name.trim(), normalizedEmail, passwordHash, new Date().toISOString());
-  } catch (error) {
-    if (error instanceof Error && error.message.includes("users.email")) {
-      throw new EmailAlreadyRegisteredError();
-    }
-    throw error;
-  }
 }
 
 export async function authenticateUser(
@@ -281,6 +255,49 @@ export async function authenticateUser(
     role: user.role,
     createdAt: user.createdAt,
   };
+}
+
+export async function syncApiUser(apiUser: {
+  id: number;
+  name: string;
+  email: string;
+  isAdmin: boolean;
+}): Promise<void> {
+  const database = await getReadyDatabase();
+  const normalizedEmail = apiUser.email.trim().toLowerCase();
+  const role: UserRole = apiUser.isAdmin ? "admin" : "librarian";
+  const passwordHash = await hashPassword(randomBytes(32).toString("hex"));
+
+  database
+    .prepare(
+      `INSERT INTO users (name, email, password_hash, role, created_at)
+       VALUES (?, ?, ?, ?, ?)
+       ON CONFLICT(email) DO UPDATE SET
+         name = excluded.name,
+         role = excluded.role`,
+    )
+    .run(apiUser.name, normalizedEmail, passwordHash, role, new Date().toISOString());
+}
+
+export async function createApiSession(apiUser: {
+  id: number;
+  name: string;
+  email: string;
+  isAdmin: boolean;
+}): Promise<void> {
+  await syncApiUser(apiUser);
+  const database = await getReadyDatabase();
+  const normalizedEmail = apiUser.email.trim().toLowerCase();
+  const row = database
+    .prepare("SELECT id FROM users WHERE email = ?")
+    .get(normalizedEmail);
+  const localUserId = readNumber(row, "id");
+
+  if (localUserId === null) {
+    throw new Error("Não foi possível criar a sessão do usuário.");
+  }
+
+  await createSession(localUserId);
 }
 
 export async function createSession(userId: number): Promise<void> {
@@ -349,7 +366,12 @@ export async function listUsersForAdmin(): Promise<AuthUser[]> {
   await requireAnyRole(["admin"]);
   const database = await getReadyDatabase();
   const rows = database
-    .prepare("SELECT id, name, email, role, created_at FROM users ORDER BY name COLLATE NOCASE")
+    .prepare(
+      `SELECT id, name, email, role, created_at
+       FROM users
+       WHERE role IN ('admin', 'librarian')
+       ORDER BY name COLLATE NOCASE`,
+    )
     .all();
 
   return rows.map((row) => {
