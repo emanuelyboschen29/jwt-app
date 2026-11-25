@@ -154,11 +154,11 @@ async function seedInitialAdmin(database: DatabaseSync): Promise<void> {
     return;
   }
 
-  const emailSetting = process.env.BOOTSTRAP_ADMIN_EMAIL?.trim().toLowerCase();
-  const passwordSetting = process.env.BOOTSTRAP_ADMIN_PASSWORD;
+  const emailSetting = process.env.admin_email?.trim().toLowerCase();
+  const passwordSetting = process.env.admin_password;
 
   if (Boolean(emailSetting) !== Boolean(passwordSetting)) {
-    throw new Error("Configure BOOTSTRAP_ADMIN_EMAIL e BOOTSTRAP_ADMIN_PASSWORD juntos.");
+    throw new Error("Configure admin_email e admin_password juntos.");
   }
 
   if (!emailSetting || !passwordSetting) {

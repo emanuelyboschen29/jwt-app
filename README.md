@@ -1,59 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sistema de Biblioteca
 
-## Getting Started
+Aplicação web em Next.js para autenticação e gerenciamento de uma biblioteca integrada a uma API REST.
 
-First, run the development server:
+## Requisitos
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js 24 ou superior
+- API da biblioteca em execução
+- SQLite (já incluído pela aplicação)
 
-Open [http://localhost:3001](http://localhost:3001) with your browser to see the result.
+## Configuração
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-## Usuários e permissões locais
-
-O cadastro, login, sessões e papéis são gerenciados neste projeto usando SQLite embutido no Node.js. Use Node.js 24 ou superior. A base local é criada em `data/auth.sqlite` e não deve ser commitada.
-
-Para criar o primeiro administrador, configure estas variáveis no `.env` local antes de iniciar a aplicação:
+Crie o arquivo `.env` na raiz do projeto:
 
 ```env
-BOOTSTRAP_ADMIN_EMAIL=admin@example.com
-BOOTSTRAP_ADMIN_PASSWORD=use-uma-senha-aleatoria-com-16-caracteres-ou-mais
+API_URL=http://localhost:3000/v1
+
+admin_email=admin@example.com
+admin_password=use-uma-senha-aleatoria-com-16-caracteres-ou-mais
+
+# Opcional
+AUTH_DATABASE_PATH=data/auth.sqlite
 ```
 
-O administrador inicial é criado quando a aplicação acessa a base pela primeira vez. Há dois perfis: **Administrador** (`isAdmin = true`) e **Atendente** (`isAdmin = false`). Não há cadastro público: somente administradores podem cadastrar atendentes na opção **Usuários**. Administradores gerenciam atendentes, categorias, autores, livros e relatórios; atendentes cadastram leitores, registram empréstimos e devoluções e consultam o acervo.
+O usuário administrador é criado na primeira inicialização da aplicação.
 
-Os dados ficam na máquina/servidor que executa a aplicação. Em produção com uma única instância, mantenha `data/auth.sqlite` em um volume persistente; `AUTH_DATABASE_PATH` permite escolher outro caminho. Para executar múltiplas instâncias, use um banco de dados gerenciado em vez de compartilhar um arquivo SQLite.
+## Instalação e execução
 
-## Integração com a API da biblioteca
+```bash
+npm install
+npm run dev
+```
 
-Configure `API_URL` no `.env` local. O padrão é `http://localhost:3000/v1`. A API precisa estar ativa e retornar `accessToken` e `refreshToken` no login, além de disponibilizar as rotas de categorias, autores, livros, leitores, empréstimos e relatórios descritas no README do jwt-api.
+Acesse `http://localhost:3001`.
 
-As telas de categorias e autores permitem cadastro e listagem; livros têm cadastro e filtros; leitores podem ser cadastrados e consultados; empréstimos podem ser registrados, filtrados e devolvidos. O dashboard administrativo usa o relatório da API. As gravações são validadas no servidor, verificam o perfil local e enviam o access token em `Authorization: Bearer`.
+## Perfis
 
-Os tokens de autenticação da API ficam em cookies `httpOnly`. A renovação automática pelo refresh token ainda não está implementada; quando o access token expirar, será necessário entrar novamente.
+- **Administrador:** gerencia usuários, categorias, autores, livros e relatórios.
+- **Atendente:** gerencia leitores, empréstimos e devoluções.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Funcionalidades
 
-## Learn More
+- Login e controle de sessão
+- Logout com revogação do refresh token por meio de `POST /v1/auth/logout`
+- Cadastro e consulta de categorias e autores
+- Cadastro, pesquisa e filtros de livros
+- Cadastro e consulta de leitores
+- Registro, consulta e devolução de empréstimos
+- Dashboard administrativo com relatório da biblioteca
 
-To learn more about Next.js, take a look at the following resources:
+## Logout e revogação de tokens
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+O endpoint `POST /v1/auth/logout` recebe o refresh token e o revoga no servidor. Dessa forma, o token não poderá ser usado novamente para renovar uma sessão.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+A tabela `logout_list` pode ser utilizada para bloquear access tokens revogados antes do fim de sua validade. Ela pode ser mantida quando a API precisa invalidar imediatamente sessões já existentes; nesse cenário, as requisições verificam se o access token está nessa lista.
 
-## Deploy on Vercel
+Caso a API não exija invalidação imediata do access token, a tabela `logout_list` pode ser removida. Após o logout, o access token continuará válido até expirar, mas não será possível renovar a sessão porque o refresh token foi revogado.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Dados locais
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Os usuários e seus papéis são armazenados em `data/auth.sqlite`. Em produção, configure `AUTH_DATABASE_PATH` para um arquivo em volume persistente.
+
+## Scripts
+
+```bash
+npm run dev    # Desenvolvimento
+npm run build  # Build de produção
+npm run start  # Executar build
+npm run lint   # Verificar código
+```
